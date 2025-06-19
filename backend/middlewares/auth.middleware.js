@@ -13,7 +13,6 @@ const protectedroute = async(req , res , next)=>{
 
     try {
         const decoedtoken = jwt.verify(token , process.env.ACCESS_TOKEN_SECRET)
-        console.log(decoedtoken._id)
 
         const user =await User.findById(decoedtoken._id).select("-password")
 

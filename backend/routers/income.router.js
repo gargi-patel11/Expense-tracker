@@ -12,10 +12,11 @@ import {
 
 } from "../controllers/income.controller.js"
 
-router.post("/addincome" ,protectedroute, addIncome)
-router.get("/viewallincome",protectedroute , viewAllIncome)
-router.get("/deleteincome",protectedroute , deleteIncome)
-router.get("/getincomeexcel",protectedroute , getincomeexcel)
+router.post("/add" ,protectedroute, addIncome)
+router.get("/view",protectedroute , viewAllIncome)
+router.get("/excel",protectedroute , getincomeexcel)
+
+router.get("/:id",protectedroute , deleteIncome)
 
 export default router ;
 

@@ -1,14 +1,20 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import AuthLayout from "../../components/layouts/authLayout";
 import { Link, useNavigate } from "react-router-dom";
 import {FaRegEye ,FaRegEyeSlash } from "react-icons/fa";
 import { validateEmail } from "../../utils/heiper";
+import axiosInatance from "../../utils/axiosInstance";
+import { API_PATH } from "../../utils/apiPath";
+import axios from "axios";
+import {UserContex} from "../../context/UserContecxt";
 
 export default function Login() {
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
   const[error , seterror] = useState(null);
   const[showpassword , setshowpassword]=useState(false);
+
+  const {updateUser} = useContext(UserContex)
 
   const toggeleshowpassword = ()=>{
     setshowpassword((prev) => !prev);
@@ -27,7 +33,33 @@ export default function Login() {
       return;
     }
     seterror("");
+
+    //handle api response 
+    try {
+      const response =await axios.post("http://localhost:8000/api/v1/auth/login" , {
+        email  , 
+        password 
+      })
+      const {accessToken , user}  = response.data
+    
+
+      if(accessToken){
+        localStorage.setItem("accessToken" , accessToken)
+        updateUser(user)
+        navigate("/dashboard")
+      }
+    } catch (error) {
+      console.log(error)
+      if(error.response && error.response.data.message){
+        seterror(error.response.data.message)
+        
+      }else {
+        seterror("somthing went wrong , please try again ")
+      }
+    }
   }
+
+
   return (
     <AuthLayout>
       <div className="lg:-w[10%] h-3/4 md:h-full flex flex-col justify-center">

@@ -12,11 +12,14 @@ import SignUp from "./pages/auth/SignUp.jsx";
 import Home from "./pages/dashboard/home.jsx";
 import Income from "./pages/dashboard/income.jsx";
 import Expense from "./pages/dashboard/expense.jsx";
+import UserProvider from './context/UserContecxt.jsx';
 
 function App() {
 
   return (
     <>
+    <UserProvider>
+
       <Router>
         <Routes>
           <Route path='/' element={<Root/>}/> 
@@ -27,6 +30,7 @@ function App() {
           <Route path='/expense' exact element={<Expense />}/>
         </Routes>
       </Router>
+      </UserProvider>
     </>
   )
 }
@@ -34,7 +38,7 @@ function App() {
 export default App
 
 const Root= ()=>{
-  const isauthenticated = !!localStorage.getItem("token");
+  const isauthenticated = !!localStorage.getItem("accessToken");
 
   return isauthenticated ? (<Navigate to='/dashboard'/>):(<Navigate to="/login" />); 
 }

@@ -44,7 +44,7 @@ const refreshAccessToken = async(req , res )=>{
 }
 
 const registeruser = async(req , res)=>{
-
+    
     const {fullname , email , password } = req.body 
 
     if(!fullname || !email || !password ){
@@ -95,8 +95,9 @@ const registeruser = async(req , res)=>{
 }
 
 const loginuser =async  (req , res)=>{
-
+   
     const {email , password}= req.body;
+    
     if(!email || !password) {
         res.status(400).json({
             message:"email or password requried"
@@ -106,16 +107,16 @@ const loginuser =async  (req , res)=>{
     try{
 
         const user =await User.findOne({email});
-        
         if(!user){
-            res.status(400),json({
+            console.log("why not here then ")
+            return res.status(400).json({
                 message:"wrong email"
             })
         }
 
         const ispasswordcorrect = await user.checkpassword(password);
         if(!ispasswordcorrect){
-            res.status(400).json({
+            return res.status(400).json({
                 message:"wrong password"
             })
         }
@@ -128,7 +129,6 @@ const loginuser =async  (req , res)=>{
         }
 
 
-    
         res.status(200)
         .cookie("refreshToken" , refreshToken )
         .cookie("accessToken" , accessToken  )
@@ -137,10 +137,9 @@ const loginuser =async  (req , res)=>{
                 _id:user._id
             },
             message:"login successfully",
-            accessToken:accessToken,
-            ceh:"hjvqsshjv"
-            
+            accessToken:accessToken,  
         })
+        
     }
     catch(e){
         res.status(500).json({
@@ -190,5 +189,5 @@ export {
     registeruser,
     getuser,
     logoutuser,
-
+    
 }
