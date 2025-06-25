@@ -99,7 +99,7 @@ const loginuser =async  (req , res)=>{
     const {email , password}= req.body;
     
     if(!email || !password) {
-        res.status(400).json({
+        return res.status(400).json({
             message:"email or password requried"
         })
     }
@@ -143,7 +143,7 @@ const loginuser =async  (req , res)=>{
     }
     catch(e){
         res.status(500).json({
-            message:"internal server error" + e 
+            message:"internal server error" , e 
         })
     }
 }
