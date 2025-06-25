@@ -9,7 +9,7 @@ import {
 } from "react-router-dom";
 import Login from "./pages/auth/login.jsx";
 import SignUp from "./pages/auth/SignUp.jsx";
-import Home from "./pages/dashboard/Home.jsx";
+import Home from "./pages/dashboard/home.jsx";
 import Income from "./pages/dashboard/income.jsx";
 import Expense from "./pages/dashboard/expense.jsx";
 import UserProvider from './context/UserContext.jsx';
