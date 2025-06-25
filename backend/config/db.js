@@ -3,7 +3,7 @@ import dotenv from "dotenv"
 dotenv.config();
 const connectDB=async() =>{
     try{
-        await mongoose.connect(process.env.DB_CONNECTIONSTRING , {});
+        await mongoose.connect(process.env.MONGODB_URI , {});
         console.log("dabase connected ");
     }
     catch(e){
