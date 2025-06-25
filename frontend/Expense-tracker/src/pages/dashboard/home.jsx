@@ -12,7 +12,7 @@ import InfoCard from "../../components/cards/InfoCard";
 import RecentTransaction from "../../components/Dashboard/RecentTransaction";
 import FinanceOverView from "../../components/Dashboard/FinanceOverView";
 import ExpenseTransections from "../../components/Dashboard/ExpenseTransections";
-import Last30daysexpense from "./last30daysexpense";
+import Last30daysexpense from "./Last30daysexpense";
 import RecentIncomeWithChart from "./RecentIncomeWithChart";
 import RecentIncome from "./RecentIncome";
 
