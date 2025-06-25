@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import AuthLayout from "../../components/layouts/authLayout";
+import AuthLayout from "../../components/layouts/AuthLayout";
 import { Link, redirect, useNavigate } from "react-router-dom";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { validateEmail } from "../../utils/heiper";

@@ -1,6 +1,6 @@
 import React from 'react'
 import CustomToolTip from './CustomToolTip'
-import CustomLegend from './CustomLegend'
+// import CustomLegend from './CustomLegend'
 import {
     PieChart , 
     Pie , 
