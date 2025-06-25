@@ -28,9 +28,10 @@ import incomeRouter from "./routers/income.router.js"
 import expenseRouter from "./routers/expense.router.js"
 import dashboardrouter from "./routers/dashboard.router.js"
 app.use("/api/v1/auth" , authrouter);
+app.use("/api/v1/dashboard" , dashboardrouter);
 app.use("/api/v1/income" , incomeRouter);
 app.use("/api/v1/expense" , expenseRouter);
-app.use("/api/v1/dashboard" , dashboardrouter);
+
 
 
 

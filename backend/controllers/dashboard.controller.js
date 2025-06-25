@@ -5,23 +5,21 @@ import { Types } from "mongoose"
 import { isValidObjectId } from "mongoose"
 
 const alldashboarddata = async(req , res)=>{
-    const userId = req.user._id
-    const userobjectid =new  Types.ObjectId(String(userId))
-    console.log("userId" + userId + "userobjectId" + userobjectid);
+
+    const userId = req.user?._id
+    const userobjectid = new  Types.ObjectId(String(userId))
 
     const totalIncome = await Income.aggregate([
         {$match:{userId :userobjectid}},
         { $group : {_id:null , total : { $sum : "$amount"}}}
     ])
 
-    console.log(totalIncome , isValidObjectId(userId))
 
     const totalExpense = await Expense.aggregate([
         {$match :{userId : userobjectid}},
         {$group : {_id :null ,total : { $sum: "$amount" }}}
     ])
 
-    console.log(totalExpense , isValidObjectId(userId))
 
     //get all income of last 60 days 
     const last60daysincome = await Income.find({userId , 

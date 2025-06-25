@@ -74,7 +74,7 @@ const getincomeexcel = async (req , res)=>{
 
     const allincome = await Income.find({userId}).sort({date:-1})
     const data = allincome.map((item)=>({
-        source:item.source.at,
+        source:item.source,
         amount:item.amount,
         date:item.date
     }))

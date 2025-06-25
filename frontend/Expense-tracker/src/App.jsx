@@ -9,17 +9,18 @@ import {
 } from "react-router-dom";
 import Login from "./pages/auth/login.jsx";
 import SignUp from "./pages/auth/SignUp.jsx";
-import Home from "./pages/dashboard/home.jsx";
+import Home from "./pages/dashboard/Home.jsx";
 import Income from "./pages/dashboard/income.jsx";
 import Expense from "./pages/dashboard/expense.jsx";
-import UserProvider from './context/UserContecxt.jsx';
+import UserProvider from './context/UserContext.jsx';
+import {Toaster } from "react-hot-toast"
 
 function App() {
 
   return (
     <>
     <UserProvider>
-
+<div>
       <Router>
         <Routes>
           <Route path='/' element={<Root/>}/> 
@@ -30,6 +31,15 @@ function App() {
           <Route path='/expense' exact element={<Expense />}/>
         </Routes>
       </Router>
+</div>
+<Toaster 
+      toastOpetions={{
+        className :"" , 
+        style :{
+          fontSize : "13px"
+        }
+      }}
+/>
       </UserProvider>
     </>
   )

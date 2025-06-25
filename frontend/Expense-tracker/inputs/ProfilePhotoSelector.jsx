@@ -8,13 +8,12 @@ function ProfilePhotoSelector({image , setimage}) {
     const handleImageUpload = (event)=>{
         const file = event.target.files[0];
         
-        console.log(file);
-
         if(file){
             setimage(file);
+            const preview = URL.createObjectURL(file);
+            setpreviewimage(preview);
         }
-        const preview = URL.createObjectURL(file);
-        setpreviewimage(preview);
+        
     }
 
     const handledeleteImage=()=>{
@@ -26,14 +25,13 @@ function ProfilePhotoSelector({image , setimage}) {
         inputRef.current.click();
     }
 
-
   return (
     <div>
       <input 
       type="file"
       accept='image/*'
       ref={inputRef}
-      name='profilephoto'
+      name='profileimageurl'
       onChange={handleImageUpload}
       className='hidden'
     />

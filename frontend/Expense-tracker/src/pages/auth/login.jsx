@@ -3,10 +3,10 @@ import AuthLayout from "../../components/layouts/authLayout";
 import { Link, useNavigate } from "react-router-dom";
 import {FaRegEye ,FaRegEyeSlash } from "react-icons/fa";
 import { validateEmail } from "../../utils/heiper";
-import axiosInatance from "../../utils/axiosInstance";
+import axiosInstance from "../../utils/axiosInstance";
 import { API_PATH } from "../../utils/apiPath";
 import axios from "axios";
-import {UserContex} from "../../context/UserContecxt";
+import {UserContext} from "../../context/UserContext";
 
 export default function Login() {
   const [email, setemail] = useState("");
@@ -14,7 +14,7 @@ export default function Login() {
   const[error , seterror] = useState(null);
   const[showpassword , setshowpassword]=useState(false);
 
-  const {updateUser} = useContext(UserContex)
+  const {updateUser} = useContext(UserContext)
 
   const toggeleshowpassword = ()=>{
     setshowpassword((prev) => !prev);
@@ -36,7 +36,7 @@ export default function Login() {
 
     //handle api response 
     try {
-      const response =await axios.post("http://localhost:8000/api/v1/auth/login" , {
+      const response =await axiosInstance.post(API_PATH.AUTH.LOGIN , {
         email  , 
         password 
       })

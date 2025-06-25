@@ -1,19 +1,28 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import AuthLayout from "../../components/layouts/authLayout";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, redirect, useNavigate } from "react-router-dom";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { validateEmail } from "../../utils/heiper";
-import  ProfilePhotoSelector  from "../../inputs/ProfilePhotoSelector";
+import  ProfilePhotoSelector  from "../../../inputs/ProfilePhotoSelector";
+import axiosInstance from "../../utils/axiosInstance"; 
+import { API_PATH } from "../../utils/apiPath";
+import { UserContext } from "../../context/UserContext";
 
 export default function SignUp() {
   const [email, setemail] = useState("");
   const [fullname, setfullname] = useState("");
-  const [profilepic, setprofilepic] = useState(null);
+  // const [profilepic, setprofilepic] = useState(null);
   const [password, setpassword] = useState("");
   const [image , setimage] = useState(null);
 
   const [error, seterror] = useState(null);
   const [showpassword, setshowpassword] = useState(false);
+  //  const [file, setFile] = useState(null);
+
+
+  const navigate = useNavigate();
+
+  const {updateUser} = useContext(UserContext) ; 
 
   const toggeleshowpassword = ()=>{
     setshowpassword((prev) => !prev);
@@ -39,11 +48,42 @@ export default function SignUp() {
 
     seterror("");
 
+  const formData = new FormData();
+  formData.append("fullname", fullname);
+  formData.append("email", email);
+  formData.append("password", password);
+  formData.append("profileimageurl", image);
+  
+
+    //handeling register api
+
+    try {
+      const response =await axiosInstance.post( API_PATH.AUTH.REGISTER ,formData ,
+     { headers: {
+          'Content-Type': 'multipart/form-data',
+        }}
+      )
+
+     const {accessToken , createduser} = response.data 
+  
+     if(response){
+        localStorage.setItem("accessToken" , accessToken)
+          updateUser(createduser)
+          navigate("/dashboard")
+     }
+    } catch (error) {
+      if(error.response && error.response.data.message){
+        seterror(error.response.data.message) ;
+
+      }else {
+        seterror("Something went wrong! Please try again ")
+      }
+    }
   };
   return (
     <>
       <AuthLayout >
-        <div className="lg:-w[10%] h-3/4 md:h-full flex flex-col justify-center mt-[10%]">
+        <div className="lg:-w[10%] h-3/4 md:h-full flex flex-col justify-center">
           <h3 className="tex
           t-xl font-semibold text-black ">Create your account </h3>
           <p className="text-xs text-slate-700 mt-[5px] mb-6">

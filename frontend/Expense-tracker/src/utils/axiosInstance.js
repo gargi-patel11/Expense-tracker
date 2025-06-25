@@ -1,8 +1,8 @@
 import axios from "axios"
 import {BASE_URL} from "./apiPath"
 
-const axiosInatance = axios.create({
-    BASE_URL : BASE_URL,
+const axiosInstance  = axios.create({
+    baseURL : BASE_URL,
     timeout : 10000,
     headers :{
         "Content-Type" : "application/json",
@@ -11,7 +11,7 @@ const axiosInatance = axios.create({
 })
 
 
-axiosInatance.interceptors.request.use(
+axiosInstance.interceptors.request.use(
     (config)=>{
         const accessToken = localStorage.getItem("accessToken")
         if(accessToken){
@@ -25,7 +25,7 @@ axiosInatance.interceptors.request.use(
     }
 )
 
-axiosInatance.interceptors.response.use(
+axiosInstance.interceptors.response.use(
     (response)=>{
         return response
     },
@@ -42,4 +42,4 @@ axiosInatance.interceptors.response.use(
 
 )
 
-export default axiosInatance ; 
+export default axiosInstance ; 

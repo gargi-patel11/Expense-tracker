@@ -48,30 +48,31 @@ const registeruser = async(req , res)=>{
     const {fullname , email , password } = req.body 
 
     if(!fullname || !email || !password ){
-        res.status(400).json({
+        return res.status(400).json({
             message:"data is not sufficient "
         })
     }
 
     const user =await User.findOne({email});
     if(user){
-        res.status(400).json({
+        return res.status(400).json({
             message:"this email is already used"
         })
     }
+    console.log(user);
+    
     let profileimageurl = null
-    console.log(req.files?.profileimageurl);
     if(req.files?.profileimageurl){
         const localimagepath = req.files.profileimageurl[0].path
-       console.log(localimagepath)
+
          profileimageurl =await uploadOnCloudinary(localimagepath);
-        console.log(profileimageurl)
+
     }
     const user1 = await User.create({
         fullname ,
         email,
         password,
-        profileimageurl:profileimageurl?.url || null 
+        profileimageurl:profileimageurl?.url
     }
     )
 
@@ -88,10 +89,9 @@ const registeruser = async(req , res)=>{
     cookie("refreshToken" , refreshToken ).
     json({
         createduser,
+        accessToken:accessToken,
         message:"user created successfully"
-    })
-   
-    
+    })  
 }
 
 const loginuser =async  (req , res)=>{
@@ -108,7 +108,6 @@ const loginuser =async  (req , res)=>{
 
         const user =await User.findOne({email});
         if(!user){
-            console.log("why not here then ")
             return res.status(400).json({
                 message:"wrong email"
             })
@@ -128,14 +127,15 @@ const loginuser =async  (req , res)=>{
             secure : true
         }
 
+        const loggedinuser = await User.findById(user._id).select(
+        "-password"
+    )
 
         res.status(200)
         .cookie("refreshToken" , refreshToken )
         .cookie("accessToken" , accessToken  )
         .json({
-            user:{
-                _id:user._id
-            },
+            user:loggedinuser,
             message:"login successfully",
             accessToken:accessToken,  
         })
@@ -154,8 +154,7 @@ const logoutuser = async (req , res)=>{
         secure: true,
     };
 
-    return res
-        .status(200)
+    return res.status(200)
         .clearCookie("accessToken", option)
         .clearCookie("refreshToken", option)
         .json({
@@ -188,6 +187,6 @@ export {
     loginuser,
     registeruser,
     getuser,
-    logoutuser,
+    logoutuser
     
 }

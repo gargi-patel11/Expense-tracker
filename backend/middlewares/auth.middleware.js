@@ -4,9 +4,10 @@ import dotenv from "dotenv"
 dotenv.config();
 
 const protectedroute = async(req , res , next)=>{
-    const token =  req.cookies?.accessToken ||req.header("Authorization")?.replace("Bearer" , "").trim()
+    const token =  req.cookies?.accessToken ||req.header("Authorization")?.replace(/bearer/i , "").trim()
     if(!token){
-        res.status(401).json({
+ 
+       return res.status(401).json({
             message:"token is not valid"
         })
     }
@@ -17,19 +18,20 @@ const protectedroute = async(req , res , next)=>{
         const user =await User.findById(decoedtoken._id).select("-password")
 
         if(!user){
-             res.status(401).json({
+   
+            return res.status(401).json({
             message:"invalid token"
             })
         }
-        req.user = user
+        req.user = user ; 
+
         next();
 
     } catch (error) {
-        res.status(500).json({
+        return res.status(500).json({
             message:"internal server error in auth middleware" , error
         })
     }
 
 }
-export {protectedroute
-}
+export {protectedroute}
