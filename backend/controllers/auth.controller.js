@@ -72,7 +72,7 @@ const registeruser = async(req , res)=>{
         fullname ,
         email,
         password,
-        profileimageurl:profileimageurl?.url
+        profileimageurl:profileimageurl?.secure_url
     }
     )
 
