@@ -47,6 +47,10 @@ const registeruser = async(req , res)=>{
     
     const {fullname , email , password } = req.body 
 
+     console.log("---- Incoming Register Request ----");
+  console.log("Body:", req.body);
+  console.log("Files:", req.files);
+
     if(!fullname || !email || !password ){
         return res.status(400).json({
             message:"data is not sufficient "
@@ -66,6 +70,8 @@ const registeruser = async(req , res)=>{
         const localimagepath = req.files.profileimageurl[0].buffer
 
          profileimageurl =await uploadOnCloudinary(localimagepath);
+          console.log("Buffer size:", buffer?.length);
+            console.log("Cloudinary Response:", profileimageurl);
 
     }
     const user1 = await User.create({
@@ -76,7 +82,7 @@ const registeruser = async(req , res)=>{
     }
     )
 
-    console.log(user1) ; 
+       console.log("Created user:", user1);
 
     const createduser = await User.findById(user1._id).select(
         "-password"
