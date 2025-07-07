@@ -26,20 +26,23 @@ axiosInstance.interceptors.request.use(
 )
 
 axiosInstance.interceptors.response.use(
-    (response)=>{
-        return response
-    },
-    (error)=>{
-        if(error.response.status === 401){
-            window.location.href = "/login";
-        }else if( error.response.status === 500){
-            console.error("server error. Please try again later ")
-        }else if ( error.response.status === "ECONNABORTED"){
-            console.error("Request timeout. try again ");
-        }
-        return Promise.reject(error)
+  (response) => response,
+  (error) => {
+    if (error.response) {
+      if (error.response.status === 401) {
+        window.location.href = "/login";
+      } else if (error.response.status === 500) {
+        console.error("Server error. Please try again later.");
+      }
+    } else if (error.code === "ECONNABORTED") {
+      console.error("Request timeout. Try again.");
+    } else {
+      console.error("Network or unknown error:", error.message);
     }
 
-)
+    return Promise.reject(error);
+  }
+);
+
 
 export default axiosInstance ; 

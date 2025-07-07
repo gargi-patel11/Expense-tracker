@@ -63,7 +63,7 @@ const registeruser = async(req , res)=>{
     
     let profileimageurl = null
     if(req.files?.profileimageurl){
-        const localimagepath = req.files.profileimageurl[0].path
+        const localimagepath = req.files.profileimageurl[0].buffer
 
          profileimageurl =await uploadOnCloudinary(localimagepath);
 
@@ -75,6 +75,8 @@ const registeruser = async(req , res)=>{
         profileimageurl:profileimageurl?.url
     }
     )
+
+    console.log(user1) ; 
 
     const createduser = await User.findById(user1._id).select(
         "-password"

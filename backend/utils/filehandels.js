@@ -3,6 +3,7 @@ import { v2 as cloudinary } from 'cloudinary';
 import dotenv from "dotenv" 
 dotenv.config();
 import fs from "fs"
+import streamifier from "streamifier";
 
     // Configuration
     cloudinary.config({ 
@@ -10,23 +11,51 @@ import fs from "fs"
         api_key:process.env.API_KEY, 
         api_secret: process.env.API_SECRET,
     });
-    const uploadOnCloudinary = async (localFilePath) => {
 
-        try {
-            if (!localFilePath) return null
-            //upload the file on cloudinary
-            const response = await cloudinary.uploader.upload(localFilePath, {
-                resource_type: "auto"
-            })
-            // file has been uploaded successfull
-            fs.unlinkSync(localFilePath)
-            return response;
+    //upload on local storage 
+    // const uploadOnCloudinary = async (localFilePath) => {
+
+    //     try {
+    //         if (!localFilePath) return null
+    //         //upload the file on cloudinary
+    //         const response = await cloudinary.uploader.upload(localFilePath, {
+    //             resource_type: "auto"
+    //         })
+    //         // file has been uploaded successfull
+    //         fs.unlinkSync(localFilePath)
+    //         return response;
     
-        } catch (error) {
-            fs.unlinkSync(localFilePath) // remove the locally saved temporary file as the upload operation got failed
-            return null;
+    //     } catch (error) {
+    //          fs.unlinkSync(localFilePath) // remove the locally saved temporary file as the upload operation got failed
+    //         return null;
+    //     }
+    // }
+
+
+    const uploadOnCloudinary = async (buffer) => {
+
+        if (!buffer) return null;
+
+  return new Promise((resolve, reject) => {
+    const stream = cloudinary.uploader.upload_stream(
+      {
+        resource_type: "auto",
+      },
+      (error, result) => {
+        if (error) {
+          console.error("Cloudinary upload error:", error);
+          reject(error);
+        } else {
+          resolve(result);
         }
-    }
+      }
+    );
+
+    streamifier.createReadStream(buffer).pipe(stream);
+  });
+};
+
+    
 
     const deleteFile = async(LocalPath)=> {
         if (!LocalPath) return null

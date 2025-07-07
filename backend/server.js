@@ -8,12 +8,7 @@ import cookieParser from "cookie-parser"
 
 const app= express();
 
-app.use(cors(
-    // {  
-    // origin: 'http://localhost:5173/', // your frontend URL
-    // credentials: true
-    // }
-));
+app.use(cors());
 app.use(cookieParser());
 app.use(express.json({limit : "16kb"}));
 app.use(express.urlencoded({extended:true , limit:"16kb"}));
@@ -37,6 +32,6 @@ app.use("/api/v1/expense" , expenseRouter);
 
 
 app.listen(PORT, ()=>{
-    console.log(`server is running on port http://localhost:${PORT}`);
+    console.log(`server is running on port http://localhost:${PORT} please check it out `);
 })
 
