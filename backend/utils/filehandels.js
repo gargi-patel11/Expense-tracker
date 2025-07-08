@@ -34,14 +34,17 @@ import streamifier from "streamifier";
 
     const uploadOnCloudinary = async (buffer) => {
 
-        if (!buffer) return null;
+      if (!buffer) return null;
 
   return new Promise((resolve, reject) => {
+    const timeout = setTimeout(() => {
+      reject(new Error("Cloudinary upload timeout"));
+    }, 20000); // 20s max
+
     const stream = cloudinary.uploader.upload_stream(
-      {
-        resource_type: "auto",
-      },
+      { resource_type: "auto" },
       (error, result) => {
+        clearTimeout(timeout);
         if (error) {
           console.error("Cloudinary upload error:", error);
           reject(error);
@@ -54,7 +57,6 @@ import streamifier from "streamifier";
     streamifier.createReadStream(buffer).pipe(stream);
   });
 };
-
     
 
     const deleteFile = async(LocalPath)=> {
